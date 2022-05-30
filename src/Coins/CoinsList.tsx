@@ -3,18 +3,20 @@ import { View, FlatList, StyleSheet, ActivityIndicator } from 'react-native'
 import CoinRow from './CoinRow'
 import { getCoinsForPage, page } from '../Network/NetworkManager'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TopListScreenNavigationProp } from '../NavigationTypes';
+import { Coin } from '../AwesomeTypes';
 
+let brrr: string
 
-const CoinsList = ({ navigation }) => {
-    
-    const [getCoins, setCoins] = useState([]) 
+const CoinsList = ({ route, navigation  }: TopListScreenNavigationProp ) => {
+
+    const [getCoins, setCoins] = useState<Coin[]>([]) 
     const [isLoading, setIsLoading] = useState(true)
     
     const getMoreCoins = async () => {
         setIsLoading(true)
         try {
             let moreCoins = await getCoinsForPage()
-            // setCoins(oldCoins => [...oldCoins, ...moreCoins] )
             setCoins([...getCoins, ...moreCoins] )
         } catch (error) {
             console.log(`getMoreCoins error ${error}`)
@@ -23,17 +25,16 @@ const CoinsList = ({ navigation }) => {
         }
     }
 
- 
     useEffect( () => {
         getMoreCoins()
     },[])
     
-    function showDetails(index) {
+    function showDetails(index: number) {
         let coin = getCoins[index]
         return () => { navigation.navigate("CoinDetail", coin) }
     }
 
-    const renderItem = ( { item, index} ) => {
+    const renderItem = ( { item, index}: {item: Coin, index: number} ) => {
        return <CoinRow onPress={showDetails(index)} 
                  coinName={item.coinName} 
                  imageUrl={item.imageUrl}></CoinRow> 

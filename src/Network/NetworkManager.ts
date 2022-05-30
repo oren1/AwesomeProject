@@ -1,4 +1,9 @@
 import uuid from 'react-native-uuid'
+import { Dictionary, Point, CoinObject } from '../AwesomeTypes'
+
+type Nullable<Type> = Type | null
+type GetHistoryCallback = (points: Nullable<Point[]>, error: Nullable<Error>) => void
+
 
 let page = 0
 const getCoinsForPage = async () => {
@@ -9,8 +14,8 @@ const getCoinsForPage = async () => {
     let response = await fetch(url)
     let json = await response.json()
     
-    let mappedCoins = json.Data.map( (object, index) => {
-        let {Id ,Name, FullName, ImageUrl} = object.CoinInfo
+    let mappedCoins = json.Data.map( (coin: CoinObject, index: number) => {
+        let {Name, FullName, ImageUrl} = coin.CoinInfo
         let obj = {
             id: uuid.v4(), 
             symbol: Name,
@@ -27,7 +32,8 @@ const getCoinsForPage = async () => {
 }
 
 
-const getHistory = async (fsym,tsym,callback) => {
+
+const getHistory = async (fsym: string, tsym: string, callback: GetHistoryCallback) => {
     try {
         console.log(`page ${page}`)
         let limit = (90 * 24) / 10
@@ -36,16 +42,15 @@ const getHistory = async (fsym,tsym,callback) => {
     
         let response = await fetch(url)
         let json = await response.json()
-        let graphPoints = json.Data.Data.map( point => ({x: point.time, y: point.close}))
+        let graphPoints = json.Data.Data.map( (point: Dictionary) => (Point.ParsePoint(point)))
         callback(graphPoints,null)
     } catch (error) {
-        callback(null,error)
+        callback(null,error as Error)
     }
-
 }
 
 export {
     getCoinsForPage,
     getHistory,
-    page
+    page,
 }
