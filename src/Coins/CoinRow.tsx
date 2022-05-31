@@ -2,7 +2,19 @@ import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native'
 import FastImage from 'react-native-fast-image'
 
-const CoinRow = ({ onPress, coinName, imageUrl }) => {
+
+interface CoinRowProp {
+    coinName: string,
+    imageUrl: string,
+    onPress: () => void
+}
+
+const meww = () => {
+ console.log("meww")
+}
+meww()
+
+const CoinRow = ({ onPress, coinName, imageUrl }: CoinRowProp) => {
 
     const CoinView = () => {
         return (<View style={styles.coinRowContainer}>
