@@ -8,9 +8,8 @@
 
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import CoinsList from './src/Coins/CoinsList';
-// import CoinsList from './src/Coins/CoinsList';
-import CoinDetail from './src/Coins/CoinDetail';
+import CoinDetail from './src/Coins/CoinDetail.js';
+// import CoinsList from './src/Coins/CoinsList.js';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -41,7 +40,7 @@ const App = () => {
             screenOptions={{headerTransparent: false}} // 'screenOptions' sets options for all screens in the navigator, in case
             //we want the same options for everyone.
           >
-            <Stack.Screen name="TopList" component={CoinsList} />
+            <Stack.Screen name="CoinDetail" component={CoinDetail} />
             <Stack.Screen
               name="CoinDetail"
               component={CoinDetail}
